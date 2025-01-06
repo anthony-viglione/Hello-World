@@ -34,7 +34,7 @@
   <h1>Race Tracker</h1>
   <div class="container">
     <div class="stopwatch">
-      <div id="display">00:00:00</div>
+      <div id="display">00:00:00.000</div>
       <button id="startStopBtn">Start</button>
       <button id="resetBtn">Reset</button>
       <button id="saveBtn">Save Timestamp</button>
@@ -62,7 +62,8 @@
       const hours = String(Math.floor(totalSeconds / 3600)).padStart(2, '0');
       const minutes = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, '0');
       const seconds = String(totalSeconds % 60).padStart(2, '0');
-      return `${hours}:${minutes}:${seconds}`;
+      const milliseconds = String(ms % 1000).padStart(3, '0');
+      return `${hours}:${minutes}:${seconds}.${milliseconds}`;
     }
 
     function updateDisplay() {
@@ -78,7 +79,7 @@
         startStopBtn.textContent = 'Start';
       } else {
         startTime = Date.now() - elapsedTime;
-        intervalId = setInterval(updateDisplay, 100);
+        intervalId = setInterval(updateDisplay, 10); // Update every 10ms
         startStopBtn.textContent = 'Stop';
       }
       isRunning = !isRunning;
@@ -89,7 +90,7 @@
       isRunning = false;
       startTime = 0;
       elapsedTime = 0;
-      display.textContent = '00:00:00';
+      display.textContent = '00:00:00.000';
       startStopBtn.textContent = 'Start';
     });
 
