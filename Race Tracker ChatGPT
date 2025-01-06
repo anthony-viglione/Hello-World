@@ -69,6 +69,7 @@
     let elapsedTime = 0;
     let intervalId;
     const timestamps = [];
+    let raceName = '';
 
     const display = document.getElementById('display');
     const startStopBtn = document.getElementById('startStopBtn');
@@ -164,7 +165,7 @@
       const encodedUri = encodeURI(csvContent);
       const link = document.createElement('a');
       link.setAttribute('href', encodedUri);
-      link.setAttribute('download', 'race_results.csv');
+      link.setAttribute('download', `${raceName || 'race_results'}.csv`);
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -180,8 +181,9 @@
     });
 
     setRaceNameBtn.addEventListener('click', () => {
-      const raceName = raceNameInput.value.trim();
-      if (raceName) {
+      const enteredName = raceNameInput.value.trim();
+      if (enteredName) {
+        raceName = enteredName;
         pageTitle.textContent = raceName;
         document.title = raceName;
       }
