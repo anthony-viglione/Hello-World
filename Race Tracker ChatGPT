@@ -8,31 +8,58 @@
     body {
       font-family: Arial, sans-serif;
       margin: 20px;
+      text-align: center;
     }
-    .container {
+
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 20px;
+    }
+
+    #display {
+      font-size: 3rem;
+      margin: 20px 0;
+    }
+
+    .stopwatch {
       display: flex;
-      justify-content: space-between;
+      flex-direction: column;
+      align-items: center;
     }
-    .stopwatch, .results {
-      flex: 1;
+
+    .stopwatch button {
+      margin: 5px;
+      padding: 10px 20px;
+      font-size: 1rem;
     }
+
     .timestamps {
-      flex: 1;
-      margin-left: 20px;
+      margin-top: 20px;
     }
+
     .timestamp-entry {
       display: flex;
+      justify-content: center;
       align-items: center;
       margin-bottom: 10px;
     }
+
+    .timestamp-entry span {
+      margin-right: 10px;
+      font-size: 1rem;
+    }
+
     .timestamp-entry input {
-      margin-left: 10px;
+      padding: 5px;
+      font-size: 1rem;
     }
-    #resultsScreen {
-      display: none;
-    }
+
     .race-name-container {
       margin-bottom: 20px;
+    }
+
+    #resultsScreen {
+      display: none;
     }
   </style>
 </head>
@@ -42,7 +69,7 @@
     <button id="setRaceNameBtn">Set Race Name</button>
   </div>
   <h1 id="pageTitle">Race Tracker</h1>
-  <div id="mainScreen" class="container">
+  <div id="mainScreen">
     <div class="stopwatch">
       <div id="display">00:00:00.000</div>
       <button id="startStopBtn">Start</button>
