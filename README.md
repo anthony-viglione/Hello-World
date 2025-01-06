@@ -13,3 +13,5 @@ I would like to create a basic stopwatch tool that allows the following:
 
 The first step to this is to get going with github again.
 For that, I'm following  [Github's "get started" article](https://docs.github.com/en/get-started/start-your-journey/hello-world)
+I completes that article and moved on.
+I ended up playing with ChatGPT a bit so I will chronicle that a litlte here as well.
