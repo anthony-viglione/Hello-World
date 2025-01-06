@@ -18,3 +18,6 @@ I ended up playing with ChatGPT a bit so I will chronicle that a litlte here as 
 
 1st Prompt
 "I am trying to create a race tracker for running. I need a basic stopwatch website that can be started, stopped, and reset. I need a button that will save the current timestamp to a list which appears to the right side. I also need each of those timestamps to have a field for a name which can be edited."
+
+2nd Prompt
+"Redo this to include milliseconds"
