@@ -15,3 +15,6 @@ The first step to this is to get going with github again.
 For that, I'm following  [Github's "get started" article](https://docs.github.com/en/get-started/start-your-journey/hello-world)
 I completes that article and moved on.
 I ended up playing with ChatGPT a bit so I will chronicle that a litlte here as well.
+
+1st Prompt
+"I am trying to create a race tracker for running. I need a basic stopwatch website that can be started, stopped, and reset. I need a button that will save the current timestamp to a list which appears to the right side. I also need each of those timestamps to have a field for a name which can be edited."
