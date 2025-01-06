@@ -38,6 +38,7 @@
       <button id="startStopBtn">Start</button>
       <button id="resetBtn">Reset</button>
       <button id="saveBtn">Save Timestamp</button>
+      <button id="downloadBtn">Download CSV</button>
     </div>
     <div class="timestamps">
       <h2>Timestamps</h2>
@@ -50,11 +51,13 @@
     let startTime = 0;
     let elapsedTime = 0;
     let intervalId;
+    const timestamps = [];
 
     const display = document.getElementById('display');
     const startStopBtn = document.getElementById('startStopBtn');
     const resetBtn = document.getElementById('resetBtn');
     const saveBtn = document.getElementById('saveBtn');
+    const downloadBtn = document.getElementById('downloadBtn');
     const timestampList = document.getElementById('timestampList');
 
     function formatTime(ms) {
@@ -102,7 +105,28 @@
         <span>${timestamp}</span>
         <input type="text" placeholder="Enter name">
       `;
+      const input = timestampEntry.querySelector('input');
+      timestamps.push({ timestamp, name: '' });
+
+      input.addEventListener('input', (e) => {
+        const index = Array.from(timestampList.children).indexOf(timestampEntry);
+        timestamps[index].name = e.target.value;
+      });
+
       timestampList.appendChild(timestampEntry);
+    });
+
+    downloadBtn.addEventListener('click', () => {
+      const csvContent = 'data:text/csv;charset=utf-8,' + 
+        'Timestamp,Name\n' + 
+        timestamps.map(t => `${t.timestamp},${t.name}`).join('\n');
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement('a');
+      link.setAttribute('href', encodedUri);
+      link.setAttribute('download', 'timestamps.csv');
+      document.body.appendChild(link); // Required for Firefox
+      link.click();
+      document.body.removeChild(link);
     });
   </script>
 </body>
