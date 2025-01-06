@@ -13,7 +13,7 @@
       display: flex;
       justify-content: space-between;
     }
-    .stopwatch {
+    .stopwatch, .results {
       flex: 1;
     }
     .timestamps {
@@ -28,22 +28,32 @@
     .timestamp-entry input {
       margin-left: 10px;
     }
+    #resultsScreen {
+      display: none;
+    }
   </style>
 </head>
 <body>
   <h1>Race Tracker</h1>
-  <div class="container">
+  <div id="mainScreen" class="container">
     <div class="stopwatch">
       <div id="display">00:00:00.000</div>
       <button id="startStopBtn">Start</button>
       <button id="resetBtn">Reset</button>
       <button id="saveBtn">Save Timestamp</button>
-      <button id="downloadBtn">Download CSV</button>
+      <button id="endRaceBtn">End Race</button>
     </div>
     <div class="timestamps">
       <h2>Timestamps</h2>
       <div id="timestampList"></div>
     </div>
+  </div>
+
+  <div id="resultsScreen">
+    <h2>Race Results</h2>
+    <div id="resultsList"></div>
+    <button id="downloadResultsBtn">Download CSV</button>
+    <button id="resetRaceBtn">Reset Race</button>
   </div>
 
   <script>
@@ -57,8 +67,13 @@
     const startStopBtn = document.getElementById('startStopBtn');
     const resetBtn = document.getElementById('resetBtn');
     const saveBtn = document.getElementById('saveBtn');
-    const downloadBtn = document.getElementById('downloadBtn');
+    const endRaceBtn = document.getElementById('endRaceBtn');
+    const downloadResultsBtn = document.getElementById('downloadResultsBtn');
+    const resetRaceBtn = document.getElementById('resetRaceBtn');
     const timestampList = document.getElementById('timestampList');
+    const mainScreen = document.getElementById('mainScreen');
+    const resultsScreen = document.getElementById('resultsScreen');
+    const resultsList = document.getElementById('resultsList');
 
     function formatTime(ms) {
       const totalSeconds = Math.floor(ms / 1000);
@@ -106,7 +121,7 @@
         <input type="text" placeholder="Enter name">
       `;
       const input = timestampEntry.querySelector('input');
-      timestamps.push({ timestamp, name: '' });
+      timestamps.push({ timestamp, name: '', place: '' });
 
       input.addEventListener('input', (e) => {
         const index = Array.from(timestampList.children).indexOf(timestampEntry);
@@ -116,17 +131,47 @@
       timestampList.appendChild(timestampEntry);
     });
 
-    downloadBtn.addEventListener('click', () => {
+    endRaceBtn.addEventListener('click', () => {
+      // Sort timestamps by time
+      const sortedTimestamps = timestamps.slice().sort((a, b) => a.timestamp.localeCompare(b.timestamp));
+
+      // Assign places
+      sortedTimestamps.forEach((t, index) => {
+        if (index === 0) t.place = '1st';
+        else if (index === 1) t.place = '2nd';
+        else if (index === 2) t.place = '3rd';
+      });
+
+      // Display results
+      resultsList.innerHTML = sortedTimestamps
+        .map((t, index) => `${t.place || ''} - ${t.name || 'N/A'} (${t.timestamp})`)
+        .join('<br>');
+      
+      // Show results screen
+      mainScreen.style.display = 'none';
+      resultsScreen.style.display = 'block';
+    });
+
+    downloadResultsBtn.addEventListener('click', () => {
       const csvContent = 'data:text/csv;charset=utf-8,' + 
-        'Timestamp,Name\n' + 
-        timestamps.map(t => `${t.timestamp},${t.name}`).join('\n');
+        'Place,Name,Timestamp\n' + 
+        timestamps.map(t => `${t.place},${t.name},${t.timestamp}`).join('\n');
       const encodedUri = encodeURI(csvContent);
       const link = document.createElement('a');
       link.setAttribute('href', encodedUri);
-      link.setAttribute('download', 'timestamps.csv');
+      link.setAttribute('download', 'race_results.csv');
       document.body.appendChild(link); // Required for Firefox
       link.click();
       document.body.removeChild(link);
+    });
+
+    resetRaceBtn.addEventListener('click', () => {
+      timestamps.length = 0;
+      timestampList.innerHTML = '';
+      resultsList.innerHTML = '';
+      mainScreen.style.display = 'flex';
+      resultsScreen.style.display = 'none';
+      resetBtn.click();
     });
   </script>
 </body>
