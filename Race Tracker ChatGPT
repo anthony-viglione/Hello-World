@@ -31,10 +31,17 @@
     #resultsScreen {
       display: none;
     }
+    .race-name-container {
+      margin-bottom: 20px;
+    }
   </style>
 </head>
 <body>
-  <h1>Race Tracker</h1>
+  <div class="race-name-container">
+    <input id="raceNameInput" type="text" placeholder="Enter race name">
+    <button id="setRaceNameBtn">Set Race Name</button>
+  </div>
+  <h1 id="pageTitle">Race Tracker</h1>
   <div id="mainScreen" class="container">
     <div class="stopwatch">
       <div id="display">00:00:00.000</div>
@@ -74,6 +81,9 @@
     const mainScreen = document.getElementById('mainScreen');
     const resultsScreen = document.getElementById('resultsScreen');
     const resultsList = document.getElementById('resultsList');
+    const raceNameInput = document.getElementById('raceNameInput');
+    const setRaceNameBtn = document.getElementById('setRaceNameBtn');
+    const pageTitle = document.getElementById('pageTitle');
 
     function formatTime(ms) {
       const totalSeconds = Math.floor(ms / 1000);
@@ -132,22 +142,17 @@
     });
 
     endRaceBtn.addEventListener('click', () => {
-      // Sort timestamps by time
       const sortedTimestamps = timestamps.slice().sort((a, b) => a.timestamp.localeCompare(b.timestamp));
-
-      // Assign places
       sortedTimestamps.forEach((t, index) => {
         if (index === 0) t.place = '1st';
         else if (index === 1) t.place = '2nd';
         else if (index === 2) t.place = '3rd';
       });
 
-      // Display results
       resultsList.innerHTML = sortedTimestamps
-        .map((t, index) => `${t.place || ''} - ${t.name || 'N/A'} (${t.timestamp})`)
+        .map((t) => `${t.place || ''} - ${t.name || 'N/A'} (${t.timestamp})`)
         .join('<br>');
       
-      // Show results screen
       mainScreen.style.display = 'none';
       resultsScreen.style.display = 'block';
     });
@@ -160,7 +165,7 @@
       const link = document.createElement('a');
       link.setAttribute('href', encodedUri);
       link.setAttribute('download', 'race_results.csv');
-      document.body.appendChild(link); // Required for Firefox
+      document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
     });
@@ -172,6 +177,14 @@
       mainScreen.style.display = 'flex';
       resultsScreen.style.display = 'none';
       resetBtn.click();
+    });
+
+    setRaceNameBtn.addEventListener('click', () => {
+      const raceName = raceNameInput.value.trim();
+      if (raceName) {
+        pageTitle.textContent = raceName;
+        document.title = raceName;
+      }
     });
   </script>
 </body>
